@@ -1,0 +1,2 @@
+def toDFA():
+  pass
