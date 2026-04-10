@@ -35,7 +35,7 @@
 # }
 
 
-def toDFA(nfa):
+def build_dfa(nfa):
     states = [frozenset([nfa["start"]])] # {"q0"}
     transitions = {}
 
@@ -58,8 +58,8 @@ def toDFA(nfa):
     return states, transitions
 
 
-def final_dfa(nfa):
-    states, transitions = toDFA(nfa)
+def dfa(nfa):
+    states, transitions = build_dfa(nfa)
 
     names = {s: chr(65+i) for i, s in enumerate(states)}
 
