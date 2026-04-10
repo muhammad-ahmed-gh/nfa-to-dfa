@@ -75,16 +75,16 @@ def buildDFA(NFA):
     return states, transitions
 
 
-def DFA(nfa):
-    states, transitions = buildDFA(nfa)
+def DFA(NFA):
+    states, transitions = buildDFA(NFA)
 
     names = {s: chr(65 + i) for i, s in enumerate(states)}
 
-    startState = epsilonClosure([nfa["start"]], nfa)
+    startState = epsilonClosure([NFA["start"]], NFA)
 
     DFA = {
         "states": list(names.values()),
-        "alphabet": nfa["alphabet"],
+        "alphabet": NFA["alphabet"],
         "start": names[startState],
         "accepting": [],
         "transitions": {}
@@ -95,11 +95,11 @@ def DFA(nfa):
         DFA["transitions"][name] = {}
 
         for x in s:
-            if x in nfa["accepting"]:
+            if x in NFA["accepting"]:
                 DFA["accepting"].append(name)
                 break
 
-        for sym in nfa["alphabet"]:
+        for sym in NFA["alphabet"]:
             DFA["transitions"][name][sym] = names[transitions[s][sym]]
 
     return DFA

@@ -1,2 +1,2 @@
-def getInfo():
+def getNFA():
   pass

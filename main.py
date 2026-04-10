@@ -1,11 +1,11 @@
-from input import getInfo
+from input import getNFA
 from validation import validate
 from processing import DFA
 from output import displayResult
 
-info = getInfo()
+NFA = getNFA()
 
-if(validate(info)):
-  displayResult(DFA(info))
+if(validate(NFA)):
+  displayResult(DFA(NFA))
 else:
   print("ERROR: invalid input")
