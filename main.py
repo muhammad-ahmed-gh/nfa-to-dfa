@@ -4,8 +4,9 @@ from processing import DFA
 from output import displayResult
 
 NFA = getNFA()
+isValid, errMsg = validate(NFA)
 
-if(validate(NFA)):
-  displayResult(DFA(NFA))
+if(isValid):
+    displayResult(DFA(NFA))
 else:
-  print("ERROR: invalid input")
+    print(errMsg)
