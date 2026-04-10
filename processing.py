@@ -34,53 +34,72 @@
 #   }
 # }
 
+def epsilonClosure(states, nfa):
+    closure = set(states) # initial value = {q0, q1, ...}
 
-def build_dfa(nfa):
-    states = [frozenset([nfa["start"]])] # {"q0"}
+    changed = True
+    while changed:
+        changed = False
+
+        for state in list(closure):
+            for nextState in nfa["transitions"].get(state, {}).get("ε", []):
+                if nextState not in closure:
+                    closure.add(nextState) # add q2 and it will be gone through later
+                    changed = True
+
+    return frozenset(closure)
+
+
+def buildDFA(NFA):
+    start = epsilonClosure([NFA["start"]], NFA) # initial value = start + its closure
+    states = [start]
     transitions = {}
 
-    for i in range(len(states)):
-        current = states[i]
+    for state in states:
+        current = state
         transitions[current] = {}
 
-        for symbol in nfa["alphabet"]:
-            next_state = set()
+        for symbol in NFA["alphabet"]:
+            nextState = set()
 
             for s in current:
-                next_state.update(nfa["transitions"].get(s, {}).get(symbol, []))
+                nextState.update(NFA["transitions"].get(s, {}).get(symbol, []))
 
-            next_state = frozenset(next_state)
-            transitions[current][symbol] = next_state
+            nextState = epsilonClosure(nextState, NFA)
 
-            if next_state not in states:
-                states.append(next_state)
+            transitions[current][symbol] = nextState
+
+            if nextState not in states:
+                states.append(nextState)
 
     return states, transitions
 
 
-def dfa(nfa):
-    states, transitions = build_dfa(nfa)
+def DFA(nfa):
+    states, transitions = buildDFA(nfa)
 
-    names = {s: chr(65+i) for i, s in enumerate(states)}
+    names = {s: chr(65 + i) for i, s in enumerate(states)}
 
-    dfa = {
+    startState = epsilonClosure([nfa["start"]], nfa)
+
+    DFA = {
         "states": list(names.values()),
         "alphabet": nfa["alphabet"],
-        "start": names[frozenset([nfa["start"]])],
+        "start": names[startState],
         "accepting": [],
         "transitions": {}
     }
 
     for s in states:
         name = names[s]
-        dfa["transitions"][name] = {}
+        DFA["transitions"][name] = {}
 
         for x in s:
             if x in nfa["accepting"]:
-                dfa["accepting"].append(name)
+                DFA["accepting"].append(name)
                 break
 
         for sym in nfa["alphabet"]:
-            dfa["transitions"][name][sym] = names[transitions[s][sym]]
+            DFA["transitions"][name][sym] = names[transitions[s][sym]]
 
-    return dfa
+    return DFA
