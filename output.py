@@ -24,17 +24,17 @@
 #  →A      | →A      | *C      |
 #...
 def displayResult(result_DFA):
-    print(f"---------DFA Table---------")
+    print(f"\n---------DFA Table---------")
     print(f"Alphabet: {result_DFA['alphabet']}")
     print(f"States: {result_DFA['states']}")
     print(f"Start state: {result_DFA['start']}")
     print(f"Accept state: {result_DFA['accepting']}")
     print(f"Transitions Table:")
-    print("-------"+"----------"*len(result_DFA['alphabet']))
+    print("---------"+"----------"*len(result_DFA['alphabet']))
     print("State",end="    |")
     for alpha in result_DFA['alphabet']:
-        print(f"input({alpha})", end=" |")
-    print("\n-------"+"----------"*len(result_DFA['alphabet']))
+        print(f"{alpha}       ", end=" |")
+    print("\n---------"+"----------"*len(result_DFA['alphabet']))
     for state in result_DFA['states']:
         prefix="  "
         if(state in result_DFA['accepting']) and (state in result_DFA['start']):

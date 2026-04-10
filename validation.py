@@ -37,11 +37,11 @@ def validate(data):
         #path is json object
         for symbol, targets in paths.items():
             # Check if the symbol is in the alphabet
-            if str(symbol) not in alphabet:
+            if str(symbol) not in alphabet and str(symbol) != 'ε':
                 return False, f"Symbol '{symbol}' in transitions not in alphabet."
             
             # For NFA (Input style): targets is a list as nfa state can have multiple transitions for same symbol
-      
+
             if isinstance(targets, list):
                 for target in targets:
                     if target not in states:
